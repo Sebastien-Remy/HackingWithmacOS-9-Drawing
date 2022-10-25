@@ -10,10 +10,19 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+            Text("Triangle")
+            Path { path in
+                path.move(to: CGPoint(x: 200, y: 100))
+                path.addLine(to: CGPoint(x: 100, y: 300))
+                path.addLine(to: CGPoint(x: 300, y: 300))
+                path.addLine(to: CGPoint(x: 200, y: 100))
+//                path.closeSubpath()
+            }
+//            .fill(.blue)
+//            .stroke(.red, lineWidth: 10)
+            .stroke(.blue, style: StrokeStyle(lineWidth: 10, lineCap: .round,lineJoin: .round))
+            .frame(width: 500, height: 500)
+            .padding(50)
         }
         .padding()
     }
