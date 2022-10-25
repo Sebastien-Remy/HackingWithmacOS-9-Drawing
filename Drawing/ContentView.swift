@@ -10,8 +10,8 @@ import SwiftUI
 struct ContentView: View {
     
     
-    @State private var petalOffset = -20.0
-    @State private var petalWidth = 100.0
+//    @State private var petalOffset = -20.0
+//    @State private var petalWidth = 100.0
     
     var body: some View {
         
@@ -45,17 +45,31 @@ struct ContentView: View {
 //            Arc(startAngle: .degrees(0), endAngle: .degrees(220), clockwise: true)
 //                .strokeBorder(.blue, lineWidth: 40)
 //                .frame(width: 500, height: 500)
+//
+//            Flower(petalOffSet: petalOffset, petalWidth: petalWidth)
+//                .fill(.red, style: FillStyle(eoFill: true))
+//                .frame(width: 300)
+//
+//            Text("Offset")
+//            Slider(value: $petalOffset, in: -40...40)
+//                .padding([.horizontal, .bottom])
+//            Text("Width")
+//            Slider(value: $petalWidth, in: 0...100)
+//                .padding(.horizontal)
             
-            Flower(petalOffSet: petalOffset, petalWidth: petalWidth)
-                .fill(.red, style: FillStyle(eoFill: true))
-                .frame(width: 300)
             
-            Text("Offset")
-            Slider(value: $petalOffset, in: -40...40)
-                .padding([.horizontal, .bottom])
-            Text("Width")
-            Slider(value: $petalWidth, in: 0...100)
-                .padding(.horizontal)
+            
+            
+            Text("Hello world")
+                .frame(width: 300, height: 100)
+                .border(ImagePaint(image: Image("Example"), scale: 0.2), width: 30)
+            Text("Hello")
+                .frame(width: 300, height: 100).border(ImagePaint(image: Image("Example"), sourceRect: CGRect(x: 0, y: 0.25, width: 1, height: 0.5)), width: 30)
+            Capsule()
+                .strokeBorder(ImagePaint(image: Image("Example"), scale: 0.2), lineWidth: 20)
+                .frame(width: 300, height: 100)
+            
+                
         }
         .padding()
     }
