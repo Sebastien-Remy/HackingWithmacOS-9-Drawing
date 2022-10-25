@@ -26,11 +26,19 @@ struct ContentView: View {
 //                .stroke(.blue, style: StrokeStyle(lineWidth: 10, lineCap: .round,lineJoin: .round))
 //                .frame(width: 300, height: 300)
 //                .padding(50)
-            Arc(startAngle: .degrees(0), endAngle: .degrees(220), clockwise: true) .stroke(.blue, lineWidth: 10)
-                .frame(width: 300, height: 300)
-                .padding(50)
             
+//            // Arc
+//            Arc(startAngle: .degrees(0), endAngle: .degrees(220), clockwise: true) .stroke(.blue, lineWidth: 10)
+//                .frame(width: 300, height: 300)
+//                .padding(50)
+//
+//            Circle()
+//                .strokeBorder(.blue, lineWidth: 40)
+//                .frame(width: 500, height: 500)
             
+            Arc(startAngle: .degrees(0), endAngle: .degrees(220), clockwise: true)
+                .strokeBorder(.blue, lineWidth: 40)
+                .frame(width: 500, height: 500)
         }
         .padding()
     }
@@ -50,10 +58,18 @@ struct Triangle: Shape {
     }
 }
 
-struct Arc: Shape {
+struct Arc: InsettableShape {
     var startAngle: Angle
     var endAngle: Angle
     var clockwise: Bool
+    
+    var insetAmount = 0.0
+    
+    func inset(by amount: CGFloat) -> some InsettableShape {
+        var arc = self
+        arc.insetAmount += amount
+        return arc
+    }
     
     func path(in rect: CGRect) -> Path {
     
@@ -64,10 +80,10 @@ struct Arc: Shape {
         var path = Path()
         
         path.addArc(center: CGPoint(x: rect.midX, y: rect.midY),
-                    radius: rect.width / 2,
+                    radius: rect.width / 2 - insetAmount,
                     startAngle: modifiedStart,
                     endAngle: modifiedEnd,
-                    clockwise: clockwise)
+                    clockwise: !clockwise)
         
         return path
     }
