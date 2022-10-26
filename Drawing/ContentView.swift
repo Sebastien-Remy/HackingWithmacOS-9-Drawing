@@ -14,9 +14,19 @@ struct ContentView: View {
 //    @State private var petalWidth = 100.0
     
 //    @State private var colorCycle = 0.0
-    @State private var amount = 0.0
+    @State private var insetAmount = 50.0
     var body: some View {
-            VStack {
+//            VStack {
+        Trapezoid(insetAmount: insetAmount)
+            .frame(width: 200, height: 100)
+            .padding(50)
+            .onTapGesture {
+                withAnimation {
+                    insetAmount = Double.random(in: 10...90)
+                }
+            }
+        
+        
                 //            Text("Triangle")
                 //            Path { path in
                 //                path.move(to: CGPoint(x: 200, y: 100))
@@ -86,37 +96,57 @@ struct ContentView: View {
 //                }
 //                .frame(width: 400, height: 300)
                 
-                
-                ZStack {
-                    Circle()
-                        .fill(Color(red: 1, green: 0, blue: 0))
-                        .frame(width: 200 * amount)
-                        .offset(x: -50, y: -80)
-                        .blendMode(.screen)
-                    Circle()
-                        .fill(Color(red: 0, green: 1, blue: 0))
-                        .frame(width: 200 * amount)
-                        .offset(x: 50, y: -80)
-                        .blendMode(.screen)
-                    Circle()
-                        .fill(Color(red: 0, green: 0, blue: 1))
-                        .frame(width: 200 * amount)
-                        .blendMode(.screen)
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(.black)
-
-                Slider(value: $amount)
-                    .padding()
-                Image("Example")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 400, height: 300)
-                    .saturation(amount)
-                    .blur(radius: (1 - amount) * 20)
-            }
+//
+//                ZStack {
+//                    Circle()
+//                        .fill(Color(red: 1, green: 0, blue: 0))
+//                        .frame(width: 200 * amount)
+//                        .offset(x: -50, y: -80)
+//                        .blendMode(.screen)
+//                    Circle()
+//                        .fill(Color(red: 0, green: 1, blue: 0))
+//                        .frame(width: 200 * amount)
+//                        .offset(x: 50, y: -80)
+//                        .blendMode(.screen)
+//                    Circle()
+//                        .fill(Color(red: 0, green: 0, blue: 1))
+//                        .frame(width: 200 * amount)
+//                        .blendMode(.screen)
+//                }
+//                .frame(maxWidth: .infinity, maxHeight: .infinity)
+//                .background(.black)
+//
+//                Slider(value: $amount)
+//                    .padding()
+//                Image("Example")
+//                    .resizable()
+//                    .scaledToFit()
+//                    .frame(width: 400, height: 300)
+//                    .saturation(amount)
+//                    .blur(radius: (1 - amount) * 20)
+//            }
     }
 }
+
+struct Trapezoid: Shape {
+    var insetAmount: Double
+    var animatableData: Double {
+        get { insetAmount }
+        set { insetAmount = newValue }
+    }
+    func path (in rect: CGRect) -> Path {
+        var path = Path()
+        
+        path.move(to: CGPoint(x: 0, y: rect.maxY))
+        path.addLine(to: CGPoint(x: insetAmount, y: rect.minY))
+        path.addLine(to: CGPoint(x: rect.maxX - insetAmount, y: rect.minY))
+        path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY))
+        path.addLine(to: CGPoint(x: 0, y: rect.maxY))
+        
+        return path
+    }
+}
+
 
 struct ColorCyclingCircle: View {
     var amount = 0.0
