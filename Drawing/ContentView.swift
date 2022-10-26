@@ -14,17 +14,28 @@ struct ContentView: View {
 //    @State private var petalWidth = 100.0
     
 //    @State private var colorCycle = 0.0
-    @State private var insetAmount = 50.0
+//    @State private var insetAmount = 50.0
+    
+    @State private var rows = 4
+    @State private var columns = 4
     var body: some View {
-//            VStack {
-        Trapezoid(insetAmount: insetAmount)
-            .frame(width: 200, height: 100)
-            .padding(50)
+        Checkerboard(rows: rows, columns: columns)
             .onTapGesture {
-                withAnimation {
-                    insetAmount = Double.random(in: 10...90)
+                withAnimation(.linear(duration: 3)) {
+                    rows = 8
+                    columns = 16
                 }
             }
+    }
+//            VStack {
+//        Trapezoid(insetAmount: insetAmount)
+//            .frame(width: 200, height: 100)
+//            .padding(50)
+//            .onTapGesture {
+//                withAnimation {
+//                    insetAmount = Double.random(in: 10...90)
+//                }
+//            }
         
         
                 //            Text("Triangle")
@@ -125,8 +136,48 @@ struct ContentView: View {
 //                    .saturation(amount)
 //                    .blur(radius: (1 - amount) * 20)
 //            }
+//    }
+}
+    
+struct Checkerboard: Shape {
+    var rows: Int
+    var columns: Int
+    
+    var animatableData: AnimatablePair<Double, Double> {
+        get {
+            AnimatablePair(Double(rows), Double(columns))
+        }
+        set {
+            rows = Int(newValue.first)
+            columns = Int(newValue.second)
+        }
+    }
+    
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        
+        // figure out how big each row/column needs to be
+        let rowSize = rect.height / Double(rows)
+        let columnSize = rect.width / Double(columns)
+        
+        // lopper over rows and columns, making alternating squares colored
+        
+        for row in 0..<rows {
+            for columun in 0..<columns {
+                if (row + columun).isMultiple(of: 2) {
+                    // this square should be colored
+                    let startX = columnSize * Double(columun)
+                    let startY = rowSize * Double(row)
+                    let rect = CGRect(x: startX, y: startY, width: columnSize, height: rowSize)
+                    path.addRect(rect)
+                }
+            }
+        }
+        
+        return path
     }
 }
+    
 
 struct Trapezoid: Shape {
     var insetAmount: Double
